@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
+import os
 from flask_cors import CORS  
 import pandas as pd
 import numpy as np
@@ -84,6 +85,20 @@ def segment_customers():
 
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 400
+		
+# Serve index.html at root URL
+@app.route('/')
+def serve_index():
+    return send_from_directory('.', 'index.html')
 
+# Serve static files (if any)
+@app.route('/<path:path>')
+def serve_static(path):
+    if os.path.exists(path):
+        return send_from_directory('.', path)
+    else:
+        return send_from_directory('.', 'index.html')
+		
 if __name__ == '__main__':
+
     app.run(debug=True, host='0.0.0.0', port=5001)
