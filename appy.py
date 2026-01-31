@@ -67,7 +67,7 @@ def segment_customers():
             "success": True,
             "data": result_data,
             "cluster_percentages": cluster_stats,
-            "silhouette_score": round(silhouette_avg, 4),  # 👈 Added here!
+            "silhouette_score": round(silhouette_avg, 4),
             "total_customers": len(rfm_df)
         })
 
@@ -90,5 +90,6 @@ def serve_static(path):
 if __name__ == '__main__':
 
     app.run(debug=True, host='0.0.0.0', port=5001)
+
 
 
