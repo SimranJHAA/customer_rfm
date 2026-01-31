@@ -237,21 +237,21 @@
 <body>
     <div class="container">
         <header>
-            <h1>📊 Customer Segmentation Dashboard</h1>
+            <h1>Customer Segmentation Dashboard</h1>
             <p class="subtitle">Upload your retail data. We’ll segment your customers using RFM + AI clustering.</p>
         </header>
 
         <div class="upload-card">
-            <h2>📁 Step 1: Upload Your Data</h2>
+            <h2>Step 1: Upload Your Data</h2>
             <label for="csvFile" class="file-label">
                 <span>Choose CSV File</span>
             </label>
             <input type="file" id="csvFile" accept=".csv">
             <br>
-            <button onclick="uploadFile()">🚀 Analyze My Customers</button>
+            <button onclick="uploadFile()">Analyze My Customers</button>
         </div>
 
-        <div id="loading">⏳ Processing your data... Please wait.</div>
+        <div id="loading">Processing your data... Please wait.</div>
         <div id="error"></div>
 
         <div id="results">
@@ -265,7 +265,7 @@
                 </div>
 
                 <div class="search-card">
-                    <h3>🔍 Step 2: Search Any Customer</h3>
+                    <h3>Step 2: Search Any Customer</h3>
                     <div class="search-box">
                         <input type="text" id="customerId" placeholder="Enter Customer ID (e.g., 17850)">
                         <button onclick="searchCustomer()">Search</button>
@@ -281,7 +281,7 @@
             const fileInput = document.getElementById('csvFile');
             const file = fileInput.files[0];
             if (!file) {
-                alert("⚠️ Please select a CSV file first.");
+                alert("Please select a CSV file first.");
                 return;
             }
 
@@ -322,18 +322,12 @@
             const clusterList = document.getElementById('clusterList');
             clusterList.innerHTML = '';
 
-            // Update pie chart dynamically (optional enhancement)
-            // For simplicity, we keep static colors — you can enhance with SVG/Canvas later
-
-            // Display cluster percentages
             for (const [cluster, percent] of Object.entries(data.cluster_percentages)) {
                 const div = document.createElement('div');
                 div.className = 'cluster-item';
                 div.innerHTML = `<strong>Cluster ${cluster}</strong>: ${percent.toFixed(1)}% of customers`;
                 clusterList.appendChild(div);
             }
-
-            // Store data globally for search
             window.segmentedData = data.data;
         }
 
@@ -344,7 +338,7 @@
 
             if (!id) {
                 resultDiv.className = 'result-error';
-                resultDiv.innerHTML = "⚠️ Please enter a Customer ID.";
+                resultDiv.innerHTML = "Please enter a Customer ID.";
                 return;
             }
 
@@ -356,17 +350,17 @@
                 const segmentClass = `segment-${customer.Cluster}`;
 
                 resultDiv.innerHTML = `
-                    <div>✅ <strong>Customer ${customer.CustomerID}</strong> is in <strong>Cluster ${customer.Cluster}</strong></div>
+                    <div><strong>Customer ${customer.CustomerID}</strong> is in <strong>Cluster ${customer.Cluster}</strong></div>
                     <div class="customer-details">
                         <div>Recency: <strong>${customer.Recency}</strong> days</div>
                         <div>Frequency: <strong>${customer.Frequency}</strong> orders</div>
                         <div>Monetary: <strong>£${customer.Amount.toFixed(2)}</strong></div>
                     </div>
-                    <div class="segment-badge ${segmentClass}">🏷️ ${segmentName}</div>
+                    <div class="segment-badge ${segmentClass}"> ${segmentName}</div>
                 `;
             } else {
                 resultDiv.className = 'result-error';
-                resultDiv.innerHTML = "❌ Customer ID not found in dataset.";
+                resultDiv.innerHTML = "Customer ID not found in dataset.";
             }
         }
 
@@ -380,4 +374,5 @@
         }
     </script>
 </body>
+
 </html>
