@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import silhouette_score  # 👈 Import silhouette_score
+from sklearn.metrics import silhouette_score 
 import os
 
 app = Flask(__name__)
@@ -14,11 +14,8 @@ CORS(app)
 @app.route('/segment', methods=['POST'])
 def segment_customers():
     try:
-        # Get uploaded file
         file = request.files['file']
         df = pd.read_csv(file, encoding="unicode_escape")
-
-        # === YOUR ORIGINAL DATA CLEANING ===
         df.dropna(inplace=True)
         df['CustomerID'] = df['CustomerID'].astype(str)
         df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'], format='mixed')
@@ -51,21 +48,14 @@ def segment_customers():
         scaler = MinMaxScaler()
         rfm_scaled = scaler.fit_transform(rfm_df[['Amount', 'Frequency', 'Recency']])
         rfm_scaled_df = pd.DataFrame(rfm_scaled, columns=['Amount', 'Frequency', 'Recency'])
-
         # Clustering (n_clusters=3 as in your notebook)
         kmeans = KMeans(n_clusters=3, random_state=42, n_init=10, max_iter=50)  # 👈 max_iter=50 like your code
         cluster_labels = kmeans.fit_predict(rfm_scaled_df)
         rfm_df['Cluster'] = cluster_labels
-
-	
-
-        # ✅ CALCULATE SILHOUETTE SCORE (just like your notebook!)
+        #SILHOUETTE SCORE
         silhouette_avg = silhouette_score(rfm_scaled_df, cluster_labels)
-        print(f"✅ Silhouette Score for 3 clusters: {silhouette_avg:.4f}")
-
-        # Optional: Try multiple clusters and pick best? (advanced)
-        # You can log or return scores for clusters 2-8 like in your notebook
-
+        print(f"Silhouette Score for 3 clusters: {silhouette_avg:.4f}")
+		
         # Cluster percentages
         cluster_counts = rfm_df['Cluster'].value_counts().sort_index()
         cluster_percent = (cluster_counts / len(rfm_df)) * 100
@@ -73,8 +63,6 @@ def segment_customers():
         # Convert to list of dicts for JSON
         result_data = rfm_df.to_dict(orient='records')
         cluster_stats = cluster_percent.to_dict()
-
-        # ✅ RETURN SILHOUETTE SCORE IN RESPONSE
         return jsonify({
             "success": True,
             "data": result_data,
@@ -102,3 +90,4 @@ def serve_static(path):
 if __name__ == '__main__':
 
     app.run(debug=True, host='0.0.0.0', port=5001)
+
