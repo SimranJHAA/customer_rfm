@@ -49,7 +49,7 @@ def segment_customers():
         rfm_scaled = scaler.fit_transform(rfm_df[['Amount', 'Frequency', 'Recency']])
         rfm_scaled_df = pd.DataFrame(rfm_scaled, columns=['Amount', 'Frequency', 'Recency'])
         # Clustering (n_clusters=3 as in your notebook)
-        kmeans = KMeans(n_clusters=3, random_state=42, n_init=10, max_iter=50)  # 👈 max_iter=50 like your code
+        kmeans = KMeans(n_clusters=3, random_state=42, n_init=10, max_iter=50) 
         cluster_labels = kmeans.fit_predict(rfm_scaled_df)
         rfm_df['Cluster'] = cluster_labels
         #SILHOUETTE SCORE
@@ -90,4 +90,5 @@ def serve_static(path):
 if __name__ == '__main__':
 
     app.run(debug=True, host='0.0.0.0', port=5001)
+
 
